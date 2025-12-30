@@ -1,2 +1,2 @@
 # for-VM
-sudo modprobe kvm-intel
+sudo pacman -S bubblewrap
