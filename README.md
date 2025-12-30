@@ -1,1 +1,1 @@
-printf '#!/bin/bash\ncat /home/asdf/.config/fastfetch/ascii-art.txt\necho ""\ncat /home/asdf/.config/fastfetch/ascii-art.txt\necho ""\ncat /home/asdf/.config/fastfetch/ascii-art.txt' > ~/.config/fastfetch/logo.sh
+chmod +x ~/.config/fastfetch/logo.sh
