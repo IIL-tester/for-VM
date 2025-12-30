@@ -1,9 +1,9 @@
 {
   "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
   "logo": {
-    "type": "command",
-    // This command reads your file and prints it 3 times with newlines in between
-    "source": "art=$(cat /home/asdf/.config/fastfetch/ascii-art.txt); printf \"$art\\n\\n$art\\n\\n$art\"",
+    "type": "file",
+    // We use $(...) to execute a shell command that repeats the file content
+    "source": "$(cat /home/asdf/.config/fastfetch/ascii-art.txt; echo; cat /home/asdf/.config/fastfetch/ascii-art.txt; echo; cat /home/asdf/.config/fastfetch/ascii-art.txt)",
     "color": {
       "1": "green"
     },
