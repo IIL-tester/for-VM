@@ -2,8 +2,7 @@
   "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
   "logo": {
     "type": "file",
-    // We use $(...) to execute a shell command that repeats the file content
-    "source": "$(cat /home/asdf/.config/fastfetch/ascii-art.txt; echo; cat /home/asdf/.config/fastfetch/ascii-art.txt; echo; cat /home/asdf/.config/fastfetch/ascii-art.txt)",
+    "source": "/home/asdf/.config/fastfetch/logo.sh",
     "color": {
       "1": "green"
     },
