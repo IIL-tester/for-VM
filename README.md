@@ -1,2 +1,2 @@
 # for-VM
-sudo pacman -S bubblewrap
+flatpak run org.vinegarhq.Sober
