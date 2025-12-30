@@ -1,1 +1,1 @@
-cat ~/.config/fastfetch/ascii-art.txt.bak
+nano ~/.config/fastfetch/ascii-art.txt
