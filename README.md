@@ -2,8 +2,8 @@
 {
   "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
   "logo": {
-    "type": "file",
-    "source": "/home/asdf/.config/fastfetch/ascii-art.txt",
+    "type": "command",
+    "source": "cat /home/asdf/.config/fastfetch/ascii-art.txt; echo; cat /home/asdf/.config/fastfetch/ascii-art.txt; echo; cat /home/asdf/.config/fastfetch/ascii-art.txt",
     "color": { "1": "green" },
     "padding": {
       "top": 2,
