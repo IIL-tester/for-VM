@@ -1,10 +1,12 @@
-# for-VM
 {
   "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
   "logo": {
     "type": "command",
-    "source": "cat /home/asdf/.config/fastfetch/ascii-art.txt; echo; cat /home/asdf/.config/fastfetch/ascii-art.txt; echo; cat /home/asdf/.config/fastfetch/ascii-art.txt",
-    "color": { "1": "green" },
+    // This command reads your file and prints it 3 times with newlines in between
+    "source": "art=$(cat /home/asdf/.config/fastfetch/ascii-art.txt); printf \"$art\\n\\n$art\\n\\n$art\"",
+    "color": {
+      "1": "green"
+    },
     "padding": {
       "top": 2,
       "right": 6,
