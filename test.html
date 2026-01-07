@@ -24,7 +24,9 @@
             margin: 0;
             padding: 0;
             min-height: 100vh;
-            overflow-x: hidden; /* Prevents stickers from causing horizontal scroll */
+            overflow-x: hidden;
+            /* Prevents text selection while double-tapping */
+            user-select: none; 
         }
 
         /* --- Sticker Background Layer --- */
@@ -34,25 +36,32 @@
             left: 0;
             width: 100%;
             height: 100%;
-            pointer-events: none; /* Allows you to click through them to the gallery */
-            z-index: 0; /* Keeps them behind the navigation and cards */
+            pointer-events: none;
+            z-index: 0;
         }
 
         .sticker {
             position: absolute;
-            width: 120px; /* Adjust size as needed */
+            width: 120px;
             height: auto;
             opacity: 0.8;
             filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
-            transition: transform 0.3s ease;
+            pointer-events: none;
+            /* Animation for spawned stickers */
+            animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
 
-        /* Specific positions for each sticker */
-        .s1 { top: 15%; left: 5%; transform: rotate(-15deg); }
-        .s2 { top: 60%; left: 3%; transform: rotate(10deg); }
-        .s3 { top: 20%; right: 5%; transform: rotate(12deg); }
-        .s4 { top: 75%; right: 4%; transform: rotate(-8deg); }
-        .s5 { bottom: 10%; left: 45%; transform: rotate(5deg); }
+        @keyframes popIn {
+            0% { transform: scale(0) rotate(-20deg); opacity: 0; }
+            100% { transform: scale(1) rotate(var(--rotation)); opacity: 0.8; }
+        }
+
+        /* Initial Static Stickers */
+        .s1 { top: 15%; left: 5%; --rotation: -15deg; }
+        .s2 { top: 60%; left: 3%; --rotation: 10deg; }
+        .s3 { top: 20%; right: 5%; --rotation: 12deg; }
+        .s4 { top: 75%; right: 4%; --rotation: -8deg; }
+        .s5 { bottom: 10%; left: 45%; --rotation: 5deg; }
 
         /* --- Top Navigation --- */
         nav {
@@ -98,6 +107,8 @@
             font-size: 1rem;
             outline: none;
             transition: 0.3s;
+            /* Allow typing in search without triggering stickers easily */
+            user-select: text; 
         }
 
         /* --- Gallery Grid --- */
@@ -106,7 +117,7 @@
             margin: 0 auto;
             padding: 0 1.5rem 4rem;
             position: relative;
-            z-index: 1; /* Places gallery above the fixed stickers */
+            z-index: 1;
         }
 
         .gallery {
@@ -156,13 +167,13 @@
         }
 
         @media (max-width: 1000px) {
-            .sticker { width: 80px; opacity: 0.5; } /* Make them smaller/fainter on smaller screens */
+            .sticker { width: 80px; opacity: 0.5; }
         }
     </style>
 </head>
 <body>
 
-    <div class="sticker-layer">
+    <div class="sticker-layer" id="stickerLayer">
         <img src="stickers/ado-s-01.png" class="sticker s1" alt="sticker">
         <img src="stickers/ado-s-02.png" class="sticker s2" alt="sticker">
         <img src="stickers/ado-s-03.png" class="sticker s3" alt="sticker">
@@ -171,13 +182,13 @@
     </div>
 
     <nav>
-        <div class="logo">VM_OS // <span class="logo-text" style="color:white">WALLPAPERS</span></div>
+        <div class="logo">ADO // <span class="logo-text" style="color:white">WALLPAPERS</span></div>
         <div id="clock">00:00:00</div>
     </nav>
 
     <header>
         <h1>Wallpaper Gallery</h1>
-        <p>Resource library for virtual environments</p>
+        <p>Double-tap anywhere to spawn a sticker!</p>
         <div class="search-container">
             <input type="text" id="wallpaperSearch" placeholder="Search filenames..." onkeyup="filterWallpapers()">
         </div>
@@ -220,11 +231,50 @@
             });
         }
 
+        // Handle card clicks
         document.querySelectorAll('.card').forEach(card => {
-            card.onclick = () => {
+            card.onclick = (e) => {
+                // Prevent spawning a sticker when clicking a card
+                e.stopPropagation();
                 const img = card.querySelector('img').src;
                 window.open(img, '_blank');
             };
+        });
+
+        // --- STICKER SPAWNING LOGIC ---
+        const stickerFiles = [
+            'stickers/ado-s-01.png',
+            'stickers/ado-s-02.png',
+            'stickers/ado-s-03.png',
+            'stickers/ado-s-04.png',
+            'stickers/ado-s-05.png'
+        ];
+
+        document.body.addEventListener('dblclick', (e) => {
+            const layer = document.getElementById('stickerLayer');
+            
+            // Create element
+            const newSticker = document.createElement('img');
+            
+            // Pick random sticker image
+            const randomImg = stickerFiles[Math.floor(Math.random() * stickerFiles.length)];
+            newSticker.src = randomImg;
+            newSticker.className = 'sticker';
+            
+            // Pick random rotation
+            const randomRot = (Math.random() * 40 - 20) + 'deg';
+            newSticker.style.setProperty('--rotation', randomRot);
+
+            // Position based on mouse (accounting for scroll)
+            const x = e.clientX;
+            const y = e.clientY;
+            
+            // Center the sticker on the cursor (sticker width is 120px)
+            newSticker.style.left = (x - 60) + 'px';
+            newSticker.style.top = (y - 60) + 'px';
+            newSticker.style.position = 'fixed'; // Fixed so it stays in viewport relative to tap
+
+            layer.appendChild(newSticker);
         });
     </script>
 </body>
