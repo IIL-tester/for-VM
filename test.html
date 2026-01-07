@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
     <style>
         :root {
@@ -25,8 +25,7 @@
             padding: 0;
             min-height: 100vh;
             overflow-x: hidden;
-            /* Prevents double-tap zoom on mobile so our script can catch it */
-            touch-action: manipulation; 
+            position: relative; /* Needed for sticker positioning */
         }
 
         /* --- Sticker Background Layer --- */
@@ -46,24 +45,17 @@
             height: auto;
             opacity: 0.8;
             filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
-            user-select: none;
-            pointer-events: none;
-            animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: transform 0.3s ease;
         }
 
-        @keyframes popIn {
-            0% { transform: scale(0) rotate(-20deg); opacity: 0; }
-            100% { transform: scale(1) rotate(var(--r)); opacity: 0.8; }
-        }
+        /* Specific positions for each sticker */
+        .s1 { top: 15%; left: 5%; transform: rotate(-15deg); }
+        .s2 { top: 60%; left: 3%; transform: rotate(10deg); }
+        .s3 { top: 20%; right: 5%; transform: rotate(12deg); }
+        .s4 { top: 75%; right: 4%; transform: rotate(-8deg); }
+        .s5 { bottom: 10%; left: 45%; transform: rotate(5deg); }
 
-        /* Default Static Stickers */
-        .s1 { top: 15%; left: 5%; --r: -15deg; transform: rotate(-15deg); }
-        .s2 { top: 60%; left: 3%; --r: 10deg; transform: rotate(10deg); }
-        .s3 { top: 20%; right: 5%; --r: 12deg; transform: rotate(12deg); }
-        .s4 { top: 75%; right: 4%; --r: -8deg; transform: rotate(-8deg); }
-        .s5 { bottom: 10%; left: 45%; --r: 5deg; transform: rotate(5deg); }
-
-        /* --- Navigation & Layout --- */
+        /* --- Top Navigation --- */
         nav {
             background: var(--glass);
             backdrop-filter: blur(10px);
@@ -80,6 +72,7 @@
         .logo { font-weight: 800; font-size: 1.2rem; color: var(--accent); letter-spacing: 1px; }
         #clock { font-family: monospace; font-size: 1.1rem; color: var(--text-dim); }
 
+        /* --- Hero Section --- */
         header {
             text-align: center;
             padding: 4rem 1rem 2rem;
@@ -88,7 +81,13 @@
         }
 
         h1 { font-size: 2.5rem; margin: 0; font-weight: 800; }
-        .search-container { margin: 2rem auto; max-width: 500px; width: 90%; }
+        header p { color: var(--text-dim); margin-top: 0.5rem; }
+
+        .search-container {
+            margin: 2rem auto;
+            max-width: 500px;
+            width: 90%;
+        }
 
         #wallpaperSearch {
             width: 100%;
@@ -99,8 +98,10 @@
             color: white;
             font-size: 1rem;
             outline: none;
+            transition: 0.3s;
         }
 
+        /* --- Gallery Grid --- */
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -127,21 +128,63 @@
         .card:hover {
             transform: translateY(-8px);
             border-color: var(--accent);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.5);
         }
 
-        .card img { width: 100%; height: 180px; object-fit: cover; }
-        .card-info { padding: 15px; display: flex; justify-content: space-between; align-items: center; }
-        .file-name { font-family: monospace; font-size: 0.85rem; }
+        .card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            display: block;
+        }
 
-        @media (max-width: 600px) {
-            .sticker { width: 70px; }
-            h1 { font-size: 1.8rem; }
+        .card-info {
+            padding: 15px;
+            font-size: 0.85rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .file-name { font-family: monospace; color: var(--text-main); }
+        .file-ext { 
+            background: rgba(56, 189, 248, 0.1); 
+            color: var(--accent); 
+            padding: 2px 8px; 
+            border-radius: 4px; 
+            font-size: 0.7rem;
+            text-transform: uppercase;
+        }
+
+        /* --- New Sticker Overlay --- */
+        .dynamic-sticker {
+            position: absolute;
+            width: 100px;
+            height: auto;
+            pointer-events: none;
+            z-index: 50;
+            opacity: 0.9;
+            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
+            transform: translate(-50%, -50%) scale(0);
+            animation: popIn 0.6s forwards;
+        }
+
+        @keyframes popIn {
+            0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+            70% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.9; }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 0.9; }
+        }
+
+        @media (max-width: 1000px) {
+            .sticker { width: 80px; opacity: 0.5; }
+            h1 { font-size: 2rem; }
+            nav { padding: 1rem; }
         }
     </style>
 </head>
 <body>
 
-    <div class="sticker-layer" id="stickerLayer">
+    <div class="sticker-layer">
         <img src="stickers/ado-s-01.png" class="sticker s1" alt="sticker">
         <img src="stickers/ado-s-02.png" class="sticker s2" alt="sticker">
         <img src="stickers/ado-s-03.png" class="sticker s3" alt="sticker">
@@ -150,13 +193,13 @@
     </div>
 
     <nav>
-        <div class="logo">ADO // <span style="color:white">WALLPAPERS</span></div>
+        <div class="logo">ADO // <span class="logo-text" style="color:white">WALLPAPERS</span></div>
         <div id="clock">00:00:00</div>
     </nav>
 
     <header>
         <h1>Wallpaper Gallery</h1>
-        <p style="color: var(--text-dim)">Double tap anywhere to spawn stickers</p>
+        <p>Resource library for virtual environments</p>
         <div class="search-container">
             <input type="text" id="wallpaperSearch" placeholder="Search filenames..." onkeyup="filterWallpapers()">
         </div>
@@ -164,14 +207,25 @@
 
     <div class="container">
         <div class="gallery" id="wallpaperGrid">
-            <div class="card" data-name="ado01.png"><img src="wallpapers/ado01.png"><div class="card-info"><span class="file-name">ado01</span></div></div>
-            <div class="card" data-name="ado02.webp"><img src="wallpapers/ado02.webp"><div class="card-info"><span class="file-name">ado02</span></div></div>
-            <div class="card" data-name="ado03.webp"><img src="wallpapers/ado03.webp"><div class="card-info"><span class="file-name">ado03</span></div></div>
-            </div>
+            <div class="card" data-name="ado01.png"><img src="wallpapers/ado01.png"><div class="card-info"><span class="file-name">ado01</span><span class="file-ext">png</span></div></div>
+            <div class="card" data-name="ado02.webp"><img src="wallpapers/ado02.webp"><div class="card-info"><span class="file-name">ado02</span><span class="file-ext">webp</span></div></div>
+            <div class="card" data-name="ado03.webp"><img src="wallpapers/ado03.webp"><div class="card-info"><span class="file-name">ado03</span><span class="file-ext">webp</span></div></div>
+            <div class="card" data-name="ado04.png"><img src="wallpapers/ado04.png"><div class="card-info"><span class="file-name">ado04</span><span class="file-ext">png</span></div></div>
+            <div class="card" data-name="ado05.webp"><img src="wallpapers/ado05.webp"><div class="card-info"><span class="file-name">ado05</span><span class="file-ext">webp</span></div></div>
+            <div class="card" data-name="ado06.png"><img src="wallpapers/ado06.png"><div class="card-info"><span class="file-name">ado06</span><span class="file-ext">png</span></div></div>
+            <div class="card" data-name="ado07.webp"><img src="wallpapers/ado07.webp"><div class="card-info"><span class="file-name">ado07</span><span class="file-ext">webp</span></div></div>
+            <div class="card" data-name="ado08.png"><img src="wallpapers/ado08.png"><div class="card-info"><span class="file-name">ado08</span><span class="file-ext">png</span></div></div>
+            <div class="card" data-name="ado09.jpg"><img src="wallpapers/ado09.jpg"><div class="card-info"><span class="file-name">ado09</span><span class="file-ext">jpg</span></div></div>
+            <div class="card" data-name="ado10.jpg"><img src="wallpapers/ado10.jpg"><div class="card-info"><span class="file-name">ado10</span><span class="file-ext">jpg</span></div></div>
+            <div class="card" data-name="ado11.jpg"><img src="wallpapers/ado11.jpg"><div class="card-info"><span class="file-name">ado11</span><span class="file-ext">jpg</span></div></div>
+            <div class="card" data-name="ado12.jpg"><img src="wallpapers/ado12.jpg"><div class="card-info"><span class="file-name">ado12</span><span class="file-ext">jpg</span></div></div>
+            <div class="card" data-name="ado13.jpg"><img src="wallpapers/ado13.jpg"><div class="card-info"><span class="file-name">ado13</span><span class="file-ext">jpg</span></div></div>
+            <div class="card" data-name="cards.jpg"><img src="wallpapers/cards.jpg"><div class="card-info"><span class="file-name">cards</span><span class="file-ext">jpg</span></div></div>
+            <div class="card" data-name="purple.jpg"><img src="wallpapers/purple.jpg"><div class="card-info"><span class="file-name">purple</span><span class="file-ext">jpg</span></div></div>
+        </div>
     </div>
 
     <script>
-        // --- Clock Logic ---
         function updateClock() {
             const now = new Date();
             document.getElementById('clock').innerText = now.toLocaleTimeString();
@@ -179,7 +233,6 @@
         setInterval(updateClock, 1000);
         updateClock();
 
-        // --- Filter Logic ---
         function filterWallpapers() {
             const input = document.getElementById('wallpaperSearch').value.toLowerCase();
             const cards = document.querySelectorAll('.card');
@@ -189,72 +242,77 @@
             });
         }
 
-        // --- Double Tap Sticker Logic ---
-        const stickerFiles = [
-            'stickers/ado-s-01.png',
-            'stickers/ado-s-02.png',
-            'stickers/ado-s-03.png',
-            'stickers/ado-s-04.png',
-            'stickers/ado-s-05.png'
-        ];
-
-        let lastTap = 0;
-        
-        function spawnSticker(x, y) {
-            const layer = document.getElementById('stickerLayer');
-            const newSticker = document.createElement('img');
-            
-            // Pick random sticker and random rotation
-            const randomImg = stickerFiles[Math.floor(Math.random() * stickerFiles.length)];
-            const randomRot = Math.floor(Math.random() * 60) - 30; // -30 to +30 deg
-            
-            newSticker.src = randomImg;
-            newSticker.className = 'sticker';
-            
-            // Set position (centered on tap)
-            const size = window.innerWidth < 600 ? 70 : 120;
-            newSticker.style.left = (x - size/2) + 'px';
-            newSticker.style.top = (y - size/2) + 'px';
-            newSticker.style.setProperty('--r', randomRot + 'deg');
-            newSticker.style.transform = `rotate(${randomRot}deg)`;
-
-            layer.appendChild(newSticker);
-
-            // Optional: Limit stickers to 50 to prevent lag
-            if(layer.children.length > 50) layer.removeChild(layer.firstChild);
-        }
-
-        // Mobile & Desktop Tap Handler
-        const handleTap = (e) => {
-            const now = Date.now();
-            const TIMESPAN = 300; // ms between taps
-            
-            if (now - lastTap < TIMESPAN) {
-                // It's a double tap!
-                const posX = e.pageX || (e.touches ? e.touches[0].pageX : 0);
-                const posY = e.pageY || (e.touches ? e.touches[0].pageY : 0);
-                spawnSticker(posX, posY);
-            }
-            lastTap = now;
-        };
-
-        // Listen on the document for taps
-        document.addEventListener('touchstart', handleTap);
-        document.addEventListener('mousedown', (e) => {
-            if (e.detail === 2) { // Native desktop double click check
-                spawnSticker(e.pageX, e.pageY);
-            }
-        });
-
-        // Gallery Click Logic
         document.querySelectorAll('.card').forEach(card => {
-            card.onclick = (e) => {
-                // Stop the event from bubbling up if you don't want stickers 
-                // to spawn when clicking a card
+            card.onclick = () => {
                 const img = card.querySelector('img').src;
                 window.open(img, '_blank');
             };
         });
+
+        // Sticker spawning functionality
+        const stickerUrls = [
+            "stickers/ado-s-01.png",
+            "stickers/ado-s-02.png", 
+            "stickers/ado-s-03.png",
+            "stickers/ado-s-04.png",
+            "stickers/ado-s-05.png"
+        ];
+
+        let lastTapTime = 0;
+        let tapCount = 0;
+        let tapTimer = null;
+
+        document.body.addEventListener('touchstart', handleDoubleTap);
+        document.body.addEventListener('click', handleDoubleTap);
+
+        function handleDoubleTap(e) {
+            const currentTime = new Date().getTime();
+            const tapLength = currentTime - lastTapTime;
+
+            if (tapLength < 300) {
+                tapCount++;
+                if (tapCount === 2) {
+                    // Double tap detected
+                    const rect = document.body.getBoundingClientRect();
+                    const x = e.clientX || e.touches[0].clientX;
+                    const y = e.clientY || e.touches[0].clientY;
+                    
+                    spawnRandomSticker(x, y);
+                    
+                    tapCount = 0; // Reset after double tap
+                }
+            } else {
+                tapCount = 1;
+            }
+            
+            lastTapTime = currentTime;
+            
+            // Clear timer after 300ms if single tap
+            if (tapTimer) clearTimeout(tapTimer);
+            tapTimer = setTimeout(() => { tapCount = 0; }, 300);
+        }
+
+        function spawnRandomSticker(x, y) {
+            const sticker = document.createElement('img');
+            const randomIndex = Math.floor(Math.random() * stickerUrls.length);
+            sticker.src = stickerUrls[randomIndex];
+            sticker.classList.add('dynamic-sticker');
+            
+            // Position at tap coordinates
+            sticker.style.left = `${x}px`;
+            sticker.style.top = `${y}px`;
+            
+            // Random rotation for variety
+            const rotation = Math.random() * 30 - 15; // -15 to 15 degrees
+            sticker.style.transform += ` rotate(${rotation}deg)`;
+            
+            document.body.appendChild(sticker);
+
+            // Remove sticker after animation completes (0.6s) + delay
+            setTimeout(() => {
+                sticker.remove();
+            }, 600);
+        }
     </script>
 </body>
 </html>
