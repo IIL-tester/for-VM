@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-main: #f8fafc;
+            --text-dim: #94a3b8;
+            --accent: #38bdf8;
+            --glass: rgba(30, 41, 59, 0.7);
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(circle at 50% 0%, #1e293b 0%, #0f172a 100%);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            overflow-x: hidden; /* Prevents stickers from causing side-scrolling */
+        }
+
+        /* --- Sticker Background Layer --- */
+        #sticker-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none; /* Allows clicking through stickers to the cards */
+            z-index: 0; /* Keeps them behind the text and gallery */
+            opacity: 0.6; /* Slight transparency so they don't distract too much */
+        }
+
+        .sticker {
+            position: absolute;
+            width: 120px; /* Adjust size as needed */
+            height: auto;
+            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.5));
+            user-select: none;
+        }
+
+        /* --- Top Navigation --- */
+        nav {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .logo { font-weight: 800; font-size: 1.2rem; color: var(--accent); letter-spacing: 1px; }
+        #clock { font-family: monospace; font-size: 1.1rem; color: var(--text-dim); }
+
+        /* --- Hero & Gallery (Z-index ensures they stay above stickers) --- */
+        header, .container {
+            position: relative;
+            z-index: 1; 
+        }
+
+        header { text-align: center; padding: 4rem 1rem 2rem; }
+        h1 { font-size: 2.5rem; margin: 0; font-weight: 800; }
+        header p { color: var(--text-dim); margin-top: 0.5rem; }
+
+        .search-container { margin: 2rem auto; max-width: 500px; width: 90%; }
+
+        #wallpaperSearch {
+            width: 100%;
+            padding: 15px 25px;
+            border-radius: 50px;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: var(--card-bg);
+            color: white;
+            font-size: 1rem;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem 4rem; }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(255,255,255,0.05);
+            cursor: pointer;
+        }
+
+        .card:hover { transform: translateY(-8px); border-color: var(--accent); }
+        .card img { width: 100%; height: 180px; object-fit: cover; display: block; }
+
+        .card-info { padding: 15px; font-size: 0.85rem; display: flex; justify-content: space-between; }
+        .file-name { font-family: monospace; color: var(--text-main); }
+        .file-ext { background: rgba(56, 189, 248, 0.1); color: var(--accent); padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; }
+    </style>
+</head>
+<body>
+
+    <div id="sticker-container"></div>
+
+    <nav>
+        <div class="logo">VM_OS // <span class="logo-text" style="color:white">WALLPAPERS</span></div>
+        <div id="clock">00:00:00</div>
+    </nav>
+
+    <header>
+        <h1>Wallpaper Gallery</h1>
+        <p>Resource library for virtual environments</p>
+        <div class="search-container">
+            <input type="text" id="wallpaperSearch" placeholder="Search filenames..." onkeyup="filterWallpapers()">
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="gallery" id="wallpaperGrid">
+            <div class="card" data-name="ado01.png"><img src="wallpapers/ado01.png"><div class="card-info"><span class="file-name">ado01</span><span class="file-ext">png</span></div></div>
+            <div class="card" data-name="ado02.webp"><img src="wallpapers/ado02.webp"><div class="card-info"><span class="file-name">ado02</span><span class="file-ext">webp</span></div></div>
+            <div class="card" data-name="ado03.webp"><img src="wallpapers/ado03.webp"><div class="card-info"><span class="file-name">ado03</span><span class="file-ext">webp</span></div></div>
+            <div class="card" data-name="ado04.png"><img src="wallpapers/ado04.png"><div class="card-info"><span class="file-name">ado04</span><span class="file-ext">png</span></div></div>
+            <div class="card" data-name="ado05.webp"><img src="wallpapers/ado05.webp"><div class="card-info"><span class="file-name">ado05</span><span class="file-ext">webp</span></div></div>
+            <div class="card" data-name="ado06.png"><img src="wallpapers/ado06.png"><div class="card-info"><span class="file-name">ado06</span><span class="file-ext">png</span></div></div>
+            <div class="card" data-name="ado07.webp"><img src="wallpapers/ado07.webp"><div class="card-info"><span class="file-name">ado07</span><span class="file-ext">webp</span></div></div>
+            <div class="card" data-name="ado08.png"><img src="wallpapers/ado08.png"><div class="card-info"><span class="file-name">ado08</span><span class="file-ext">png</span></div></div>
+            <div class="card" data-name="ado09.jpg"><img src="wallpapers/ado09.jpg"><div class="card-info"><span class="file-name">ado09</span><span class="file-ext">jpg</span></div></div>
+            <div class="card" data-name="ado10.jpg"><img src="wallpapers/ado10.jpg"><div class="card-info"><span class="file-name">ado10</span><span class="file-ext">jpg</span></div></div>
+            <div class="card" data-name="ado11.jpg"><img src="wallpapers/ado11.jpg"><div class="card-info"><span class="file-name">ado11</span><span class="file-ext">jpg</span></div></div>
+            <div class="card" data-name="ado12.jpg"><img src="wallpapers/ado12.jpg"><div class="card-info"><span class="file-name">ado12</span><span class="file-ext">jpg</span></div></div>
+            <div class="card" data-name="ado13.jpg"><img src="wallpapers/ado13.jpg"><div class="card-info"><span class="file-name">ado13</span><span class="file-ext">jpg</span></div></div>
+            <div class="card" data-name="cards.jpg"><img src="wallpapers/cards.jpg"><div class="card-info"><span class="file-name">cards</span><span class="file-ext">jpg</span></div></div>
+            <div class="card" data-name="purple.jpg"><img src="wallpapers/purple.jpg"><div class="card-info"><span class="file-name">purple</span><span class="file-ext">jpg</span></div></div>
+        </div>
+    </div>
+
+    <script>
+        // 1. Live Clock
+        function updateClock() {
+            document.getElementById('clock').innerText = new Date().toLocaleTimeString();
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // 2. Sticker Logic
+        const stickerFiles = [
+            'stickers/ado-s-01.png',
+            'stickers/ado-s-02.png',
+            'stickers/ado-s-03.png',
+            'stickers/ado-s-04.png',
+            'stickers/ado-s-05.png'
+        ];
+
+        function placeStickers() {
+            const container = document.getElementById('sticker-container');
+            const stickerCount = 12; // How many total stickers to show
+
+            for (let i = 0; i < stickerCount; i++) {
+                const img = document.createElement('img');
+                const randomFile = stickerFiles[Math.floor(Math.random() * stickerFiles.length)];
+                
+                img.src = randomFile;
+                img.className = 'sticker';
+                
+                // Random position
+                const top = Math.random() * 90; 
+                const left = Math.random() * 90;
+                // Random rotation
+                const rotate = (Math.random() * 40) - 20; 
+
+                img.style.top = top + "%";
+                img.style.left = left + "%";
+                img.style.transform = `rotate(${rotate}deg)`;
+                
+                container.appendChild(img);
+            }
+        }
+        placeStickers();
+
+        // 3. Search Filter
+        function filterWallpapers() {
+            const input = document.getElementById('wallpaperSearch').value.toLowerCase();
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => {
+                const name = card.getAttribute('data-name').toLowerCase();
+                card.style.display = name.includes(input) ? "block" : "none";
+            });
+        }
+
+        // 4. Open Full Image
+        document.querySelectorAll('.card').forEach(card => {
+            card.onclick = () => {
+                const img = card.querySelector('img').src;
+                window.open(img, '_blank');
+            };
+        });
+    </script>
+</body>
+</html>
