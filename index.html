@@ -1,11 +1,115 @@
-<!doctype html>
-<html>
-  <head>
-    <title>for-VM</title>
-  </head>
-  <body>
-    <h2>Welcome, This is a web page for my VM</h2>
-    <p>these are all my wallpapers</p>
-    <img src="ado01.png"/>
-  </body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VM Wallpapers</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-color: #f8fafc;
+            --accent-color: #38bdf8;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        h2 {
+            color: var(--accent-color);
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        p {
+            opacity: 0.8;
+            font-size: 1.1rem;
+        }
+
+        /* The Magic Grid */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            border-color: var(--accent-color);
+        }
+
+        .card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .card-info {
+            padding: 1rem;
+            font-size: 0.9rem;
+            text-align: center;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h2>VM Wallpapers</h2>
+        <p>A collection of visuals for my virtual environment</p>
+    </header>
+
+    <div class="gallery">
+        <div class="card">
+            <img src="ado01.png" alt="Wallpaper 01">
+            <div class="card-info">ado01.png</div>
+        </div>
+
+        <div class="card">
+            <img src="ado02.webp" alt="Wallpaper 02">
+            <div class="card-info">ado02.webp</div>
+        </div>
+
+        <div class="card">
+            <img src="ado03.webp" alt="Wallpaper 03">
+            <div class="card-info">ado03.webp</div>
+        </div>
+
+        <div class="card">
+            <img src="ado04.png" alt="Wallpaper 04">
+            <div class="card-info">ado04.png</div>
+        </div>
+
+        <div class="card">
+            <img src="purple.jpg" alt="Purple">
+            <div class="card-info">purple.jpg</div>
+        </div>
+    </div>
+
+</body>
 </html>
