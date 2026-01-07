@@ -24,28 +24,35 @@
             margin: 0;
             padding: 0;
             min-height: 100vh;
-            overflow-x: hidden; /* Prevents stickers from causing side-scrolling */
+            overflow-x: hidden; /* Prevents stickers from causing horizontal scroll */
         }
 
         /* --- Sticker Background Layer --- */
-        #sticker-container {
+        .sticker-layer {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            pointer-events: none; /* Allows clicking through stickers to the cards */
-            z-index: 0; /* Keeps them behind the text and gallery */
-            opacity: 0.6; /* Slight transparency so they don't distract too much */
+            pointer-events: none; /* Allows you to click through them to the gallery */
+            z-index: 0; /* Keeps them behind the navigation and cards */
         }
 
         .sticker {
             position: absolute;
             width: 120px; /* Adjust size as needed */
             height: auto;
-            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.5));
-            user-select: none;
+            opacity: 0.8;
+            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
+            transition: transform 0.3s ease;
         }
+
+        /* Specific positions for each sticker */
+        .s1 { top: 15%; left: 5%; transform: rotate(-15deg); }
+        .s2 { top: 60%; left: 3%; transform: rotate(10deg); }
+        .s3 { top: 20%; right: 5%; transform: rotate(12deg); }
+        .s4 { top: 75%; right: 4%; transform: rotate(-8deg); }
+        .s5 { bottom: 10%; left: 45%; transform: rotate(5deg); }
 
         /* --- Top Navigation --- */
         nav {
@@ -64,17 +71,22 @@
         .logo { font-weight: 800; font-size: 1.2rem; color: var(--accent); letter-spacing: 1px; }
         #clock { font-family: monospace; font-size: 1.1rem; color: var(--text-dim); }
 
-        /* --- Hero & Gallery (Z-index ensures they stay above stickers) --- */
-        header, .container {
+        /* --- Hero Section --- */
+        header {
+            text-align: center;
+            padding: 4rem 1rem 2rem;
             position: relative;
-            z-index: 1; 
+            z-index: 1;
         }
 
-        header { text-align: center; padding: 4rem 1rem 2rem; }
         h1 { font-size: 2.5rem; margin: 0; font-weight: 800; }
         header p { color: var(--text-dim); margin-top: 0.5rem; }
 
-        .search-container { margin: 2rem auto; max-width: 500px; width: 90%; }
+        .search-container {
+            margin: 2rem auto;
+            max-width: 500px;
+            width: 90%;
+        }
 
         #wallpaperSearch {
             width: 100%;
@@ -88,7 +100,14 @@
             transition: 0.3s;
         }
 
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem 4rem; }
+        /* --- Gallery Grid --- */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem 4rem;
+            position: relative;
+            z-index: 1; /* Places gallery above the fixed stickers */
+        }
 
         .gallery {
             display: grid;
@@ -105,17 +124,51 @@
             cursor: pointer;
         }
 
-        .card:hover { transform: translateY(-8px); border-color: var(--accent); }
-        .card img { width: 100%; height: 180px; object-fit: cover; display: block; }
+        .card:hover {
+            transform: translateY(-8px);
+            border-color: var(--accent);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.5);
+        }
 
-        .card-info { padding: 15px; font-size: 0.85rem; display: flex; justify-content: space-between; }
+        .card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .card-info {
+            padding: 15px;
+            font-size: 0.85rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
         .file-name { font-family: monospace; color: var(--text-main); }
-        .file-ext { background: rgba(56, 189, 248, 0.1); color: var(--accent); padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; }
+        .file-ext { 
+            background: rgba(56, 189, 248, 0.1); 
+            color: var(--accent); 
+            padding: 2px 8px; 
+            border-radius: 4px; 
+            font-size: 0.7rem;
+            text-transform: uppercase;
+        }
+
+        @media (max-width: 1000px) {
+            .sticker { width: 80px; opacity: 0.5; } /* Make them smaller/fainter on smaller screens */
+        }
     </style>
 </head>
 <body>
 
-    <div id="sticker-container"></div>
+    <div class="sticker-layer">
+        <img src="stickers/ado-s-01.png" class="sticker s1" alt="sticker">
+        <img src="stickers/ado-s-02.png" class="sticker s2" alt="sticker">
+        <img src="stickers/ado-s-03.png" class="sticker s3" alt="sticker">
+        <img src="stickers/ado-s-04.png" class="sticker s4" alt="sticker">
+        <img src="stickers/ado-s-05.png" class="sticker s5" alt="sticker">
+    </div>
 
     <nav>
         <div class="logo">VM_OS // <span class="logo-text" style="color:white">WALLPAPERS</span></div>
@@ -151,49 +204,13 @@
     </div>
 
     <script>
-        // 1. Live Clock
         function updateClock() {
-            document.getElementById('clock').innerText = new Date().toLocaleTimeString();
+            const now = new Date();
+            document.getElementById('clock').innerText = now.toLocaleTimeString();
         }
         setInterval(updateClock, 1000);
         updateClock();
 
-        // 2. Sticker Logic
-        const stickerFiles = [
-            'stickers/ado-s-01.png',
-            'stickers/ado-s-02.png',
-            'stickers/ado-s-03.png',
-            'stickers/ado-s-04.png',
-            'stickers/ado-s-05.png'
-        ];
-
-        function placeStickers() {
-            const container = document.getElementById('sticker-container');
-            const stickerCount = 12; // How many total stickers to show
-
-            for (let i = 0; i < stickerCount; i++) {
-                const img = document.createElement('img');
-                const randomFile = stickerFiles[Math.floor(Math.random() * stickerFiles.length)];
-                
-                img.src = randomFile;
-                img.className = 'sticker';
-                
-                // Random position
-                const top = Math.random() * 90; 
-                const left = Math.random() * 90;
-                // Random rotation
-                const rotate = (Math.random() * 40) - 20; 
-
-                img.style.top = top + "%";
-                img.style.left = left + "%";
-                img.style.transform = `rotate(${rotate}deg)`;
-                
-                container.appendChild(img);
-            }
-        }
-        placeStickers();
-
-        // 3. Search Filter
         function filterWallpapers() {
             const input = document.getElementById('wallpaperSearch').value.toLowerCase();
             const cards = document.querySelectorAll('.card');
@@ -203,7 +220,6 @@
             });
         }
 
-        // 4. Open Full Image
         document.querySelectorAll('.card').forEach(card => {
             card.onclick = () => {
                 const img = card.querySelector('img').src;
