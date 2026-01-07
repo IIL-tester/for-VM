@@ -13,7 +13,7 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Inter', system-ui, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-color);
             margin: 0;
@@ -31,85 +31,90 @@
         h2 {
             color: var(--accent-color);
             font-size: 2.5rem;
-            margin-bottom: 0.5rem;
+            margin: 0;
+            letter-spacing: -1px;
         }
 
-        p {
-            opacity: 0.8;
-            font-size: 1.1rem;
-        }
-
-        /* The Magic Grid */
         .gallery {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
             width: 100%;
             max-width: 1200px;
         }
 
         .card {
             background: var(--card-bg);
-            border-radius: 12px;
+            border-radius: 15px;
             overflow: hidden;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            cursor: pointer;
         }
 
         .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            transform: scale(1.03);
             border-color: var(--accent-color);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
         }
 
         .card img {
             width: 100%;
-            height: 200px;
+            height: 180px;
             object-fit: cover;
             display: block;
         }
 
         .card-info {
-            padding: 1rem;
-            font-size: 0.9rem;
+            padding: 12px;
+            font-size: 0.85rem;
             text-align: center;
-            font-weight: bold;
+            background: rgba(0,0,0,0.2);
+            font-family: monospace;
+        }
+
+        /* Simple Lightbox Style */
+        .card:active {
+            filter: brightness(1.2);
         }
     </style>
 </head>
 <body>
 
     <header>
-        <h2>VM Wallpapers</h2>
-        <p>A collection of visuals for my virtual environment</p>
+        <h2>Wallpapers</h2>
+        <p>Gallery for my Virtual Machine</p>
     </header>
 
     <div class="gallery">
-        <div class="card">
-            <img src="ado01.png" alt="Wallpaper 01">
-            <div class="card-info">ado01.png</div>
-        </div>
+        <div class="card"><img src="ado01.png"><div class="card-info">ado01.png</div></div>
+        <div class="card"><img src="ado04.png"><div class="card-info">ado04.png</div></div>
+        <div class="card"><img src="ado06.png"><div class="card-info">ado06.png</div></div>
+        <div class="card"><img src="ado08.png"><div class="card-info">ado08.png</div></div>
 
-        <div class="card">
-            <img src="ado02.webp" alt="Wallpaper 02">
-            <div class="card-info">ado02.webp</div>
-        </div>
+        <div class="card"><img src="ado02.webp"><div class="card-info">ado02.webp</div></div>
+        <div class="card"><img src="ado03.webp"><div class="card-info">ado03.webp</div></div>
+        <div class="card"><img src="ado05.webp"><div class="card-info">ado05.webp</div></div>
+        <div class="card"><img src="ado07.webp"><div class="card-info">ado07.webp</div></div>
 
-        <div class="card">
-            <img src="ado03.webp" alt="Wallpaper 03">
-            <div class="card-info">ado03.webp</div>
-        </div>
-
-        <div class="card">
-            <img src="ado04.png" alt="Wallpaper 04">
-            <div class="card-info">ado04.png</div>
-        </div>
-
-        <div class="card">
-            <img src="purple.jpg" alt="Purple">
-            <div class="card-info">purple.jpg</div>
-        </div>
+        <div class="card"><img src="ado09.jpg"><div class="card-info">ado09.jpg</div></div>
+        <div class="card"><img src="ado10.jpg"><div class="card-info">ado10.jpg</div></div>
+        <div class="card"><img src="ado11.jpg"><div class="card-info">ado11.jpg</div></div>
+        <div class="card"><img src="ado12.jpg"><div class="card-info">ado12.jpg</div></div>
+        <div class="card"><img src="ado13.jpg"><div class="card-info">ado13.jpg</div></div>
+        <div class="card"><img src="cards.jpg"><div class="card-info">cards.jpg</div></div>
+        <div class="card"><img src="purple.jpg"><div class="card-info">purple.jpg</div></div>
     </div>
+
+    <script>
+        // Clicking an image opens it in a new tab (simple way to view full size)
+        document.querySelectorAll('.card').forEach(card => {
+            card.onclick = () => {
+                const src = card.querySelector('img').src;
+                window.open(src, '_blank');
+            };
+        });
+    </script>
 
 </body>
 </html>
