@@ -17,7 +17,7 @@
         background-color: var(--bg-color);
         color: var(--text-color);
         margin: 0;
-        padding: 1rem; /* Reduced for mobile */
+        padding: 1rem;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -30,16 +30,15 @@
 
     h2 {
         color: var(--accent-color);
-        font-size: 2rem; /* Slightly smaller for mobile */
+        font-size: 2rem;
         margin: 0;
         letter-spacing: -1px;
     }
 
     .gallery {
         display: grid;
-        /* minmax(100%, 1fr) ensures it fills the width on tiny screens */
         grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-        gap: 15px; /* Tighter gap for mobile */
+        gap: 15px;
         width: 100%;
         max-width: 1200px;
     }
@@ -51,11 +50,9 @@
         transition: transform 0.2s ease;
         border: 1px solid rgba(255, 255, 255, 0.05);
         cursor: pointer;
-        /* Prevents blue highlight box on tap in Chrome/Safari */
         -webkit-tap-highlight-color: transparent;
     }
 
-    /* Only hover on devices that actually have a mouse */
     @media (hover: hover) {
         .card:hover {
             transform: scale(1.03);
@@ -63,7 +60,6 @@
         }
     }
 
-    /* Visual feedback for finger taps */
     .card:active {
         transform: scale(0.98);
         filter: brightness(1.1);
@@ -93,27 +89,26 @@
     </header>
 
     <div class="gallery">
-        <div class="card"><img src="ado01.png"><div class="card-info">ado01.png</div></div>
-        <div class="card"><img src="ado02.webp"><div class="card-info">ado02.webp</div></div>
-        <div class="card"><img src="ado03.webp"><div class="card-info">ado03.webp</div></div>
-        <div class="card"><img src="ado04.png"><div class="card-info">ado04.png</div></div>
+        <div class="card"><img src="wallpepers/ado01.png"><div class="card-info">ado01.png</div></div>
+        <div class="card"><img src="wallpepers/ado02.webp"><div class="card-info">ado02.webp</div></div>
+        <div class="card"><img src="wallpepers/ado03.webp"><div class="card-info">ado03.webp</div></div>
+        <div class="card"><img src="wallpepers/ado04.png"><div class="card-info">ado04.png</div></div>
 
-        <div class="card"><img src="ado05.webp"><div class="card-info">ado05.webp</div></div>
-        <div class="card"><img src="ado06.png"><div class="card-info">ado06.png</div></div>
-        <div class="card"><img src="ado07.webp"><div class="card-info">ado07.webp</div></div>
-        <div class="card"><img src="ado08.png"><div class="card-info">ado08.png</div></div>
+        <div class="card"><img src="wallpepers/ado05.webp"><div class="card-info">ado05.webp</div></div>
+        <div class="card"><img src="wallpepers/ado06.png"><div class="card-info">ado06.png</div></div>
+        <div class="card"><img src="wallpepers/ado07.webp"><div class="card-info">ado07.webp</div></div>
+        <div class="card"><img src="wallpepers/ado08.png"><div class="card-info">ado08.png</div></div>
 
-        <div class="card"><img src="ado09.jpg"><div class="card-info">ado09.jpg</div></div>
-        <div class="card"><img src="ado10.jpg"><div class="card-info">ado10.jpg</div></div>
-        <div class="card"><img src="ado11.jpg"><div class="card-info">ado11.jpg</div></div>
-        <div class="card"><img src="ado12.jpg"><div class="card-info">ado12.jpg</div></div>
-        <div class="card"><img src="ado13.jpg"><div class="card-info">ado13.jpg</div></div>
-        <div class="card"><img src="cards.jpg"><div class="card-info">cards.jpg</div></div>
-        <div class="card"><img src="purple.jpg"><div class="card-info">purple.jpg</div></div>
+        <div class="card"><img src="wallpepers/ado09.jpg"><div class="card-info">ado09.jpg</div></div>
+        <div class="card"><img src="wallpepers/ado10.jpg"><div class="card-info">ado10.jpg</div></div>
+        <div class="card"><img src="wallpepers/ado11.jpg"><div class="card-info">ado11.jpg</div></div>
+        <div class="card"><img src="wallpepers/ado12.jpg"><div class="card-info">ado12.jpg</div></div>
+        <div class="card"><img src="wallpepers/ado13.jpg"><div class="card-info">ado13.jpg</div></div>
+        <div class="card"><img src="wallpepers/cards.jpg"><div class="card-info">cards.jpg</div></div>
+        <div class="card"><img src="wallpepers/purple.jpg"><div class="card-info">purple.jpg</div></div>
     </div>
 
     <script>
-        // Clicking an image opens it in a new tab (simple way to view full size)
         document.querySelectorAll('.card').forEach(card => {
             card.onclick = () => {
                 const src = card.querySelector('img').src;
