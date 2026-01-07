@@ -5,79 +5,85 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VM Wallpapers</title>
     <style>
-        :root {
-            --bg-color: #0f172a;
-            --card-bg: #1e293b;
-            --text-color: #f8fafc;
-            --accent-color: #38bdf8;
-        }
+    :root {
+        --bg-color: #0f172a;
+        --card-bg: #1e293b;
+        --text-color: #f8fafc;
+        --accent-color: #38bdf8;
+    }
 
-        body {
-            font-family: 'Inter', system-ui, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            margin: 0;
-            padding: 2rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+    body {
+        font-family: 'Inter', system-ui, sans-serif;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        margin: 0;
+        padding: 1rem; /* Reduced for mobile */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
 
-        header {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
+    header {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
 
-        h2 {
-            color: var(--accent-color);
-            font-size: 2.5rem;
-            margin: 0;
-            letter-spacing: -1px;
-        }
+    h2 {
+        color: var(--accent-color);
+        font-size: 2rem; /* Slightly smaller for mobile */
+        margin: 0;
+        letter-spacing: -1px;
+    }
 
-        .gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 25px;
-            width: 100%;
-            max-width: 1200px;
-        }
+    .gallery {
+        display: grid;
+        /* minmax(100%, 1fr) ensures it fills the width on tiny screens */
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 15px; /* Tighter gap for mobile */
+        width: 100%;
+        max-width: 1200px;
+    }
 
-        .card {
-            background: var(--card-bg);
-            border-radius: 15px;
-            overflow: hidden;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            cursor: pointer;
-        }
+    .card {
+        background: var(--card-bg);
+        border-radius: 12px;
+        overflow: hidden;
+        transition: transform 0.2s ease;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        cursor: pointer;
+        /* Prevents blue highlight box on tap in Chrome/Safari */
+        -webkit-tap-highlight-color: transparent;
+    }
 
+    /* Only hover on devices that actually have a mouse */
+    @media (hover: hover) {
         .card:hover {
             transform: scale(1.03);
             border-color: var(--accent-color);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
         }
+    }
 
-        .card img {
-            width: 100%;
-            height: 180px;
-            object-fit: cover;
-            display: block;
-        }
+    /* Visual feedback for finger taps */
+    .card:active {
+        transform: scale(0.98);
+        filter: brightness(1.1);
+    }
 
-        .card-info {
-            padding: 12px;
-            font-size: 0.85rem;
-            text-align: center;
-            background: rgba(0,0,0,0.2);
-            font-family: monospace;
-        }
+    .card img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        display: block;
+    }
 
-        /* Simple Lightbox Style */
-        .card:active {
-            filter: brightness(1.2);
-        }
-    </style>
+    .card-info {
+        padding: 10px;
+        font-size: 0.8rem;
+        text-align: center;
+        background: rgba(0,0,0,0.2);
+        font-family: monospace;
+    }
+</style>
 </head>
 <body>
 
