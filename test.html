@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Home</title>
     <style>
         :root {
@@ -25,7 +25,8 @@
             padding: 0;
             min-height: 100vh;
             overflow-x: hidden;
-            position: relative; /* Needed for sticker positioning */
+            /* Prevent default double-tap zoom on mobile so our script can catch it */
+            touch-action: manipulation; 
         }
 
         /* --- Sticker Background Layer --- */
@@ -46,16 +47,23 @@
             opacity: 0.8;
             filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
             transition: transform 0.3s ease;
+            user-select: none;
+            pointer-events: none;
+            animation: spawnIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
 
-        /* Specific positions for each sticker */
-        .s1 { top: 15%; left: 5%; transform: rotate(-15deg); }
-        .s2 { top: 60%; left: 3%; transform: rotate(10deg); }
-        .s3 { top: 20%; right: 5%; transform: rotate(12deg); }
-        .s4 { top: 75%; right: 4%; transform: rotate(-8deg); }
-        .s5 { bottom: 10%; left: 45%; transform: rotate(5deg); }
+        @keyframes spawnIn {
+            0% { transform: translate(-50%, -50%) scale(0) rotate(-20deg); opacity: 0; }
+            100% { transform: translate(-50%, -50%) scale(1) rotate(var(--r)); opacity: 0.8; }
+        }
 
-        /* --- Top Navigation --- */
+        /* Static stickers from your original design */
+        .s1 { top: 15%; left: 5%; --r: -15deg; }
+        .s2 { top: 60%; left: 3%; --r: 10deg; }
+        .s3 { top: 20%; right: 5%; --r: 12deg; }
+        .s4 { top: 75%; right: 4%; --r: -8deg; }
+        .s5 { bottom: 10%; left: 45%; --r: 5deg; }
+
         nav {
             background: var(--glass);
             backdrop-filter: blur(10px);
@@ -72,7 +80,6 @@
         .logo { font-weight: 800; font-size: 1.2rem; color: var(--accent); letter-spacing: 1px; }
         #clock { font-family: monospace; font-size: 1.1rem; color: var(--text-dim); }
 
-        /* --- Hero Section --- */
         header {
             text-align: center;
             padding: 4rem 1rem 2rem;
@@ -101,7 +108,6 @@
             transition: 0.3s;
         }
 
-        /* --- Gallery Grid --- */
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -156,35 +162,16 @@
             text-transform: uppercase;
         }
 
-        /* --- New Sticker Overlay --- */
-        .dynamic-sticker {
-            position: absolute;
-            width: 100px;
-            height: auto;
-            pointer-events: none;
-            z-index: 50;
-            opacity: 0.9;
-            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
-            transform: translate(-50%, -50%) scale(0);
-            animation: popIn 0.6s forwards;
-        }
-
-        @keyframes popIn {
-            0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
-            70% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.9; }
-            100% { transform: translate(-50%, -50%) scale(1); opacity: 0.9; }
-        }
-
         @media (max-width: 1000px) {
             .sticker { width: 80px; opacity: 0.5; }
-            h1 { font-size: 2rem; }
+            h1 { font-size: 1.8rem; }
             nav { padding: 1rem; }
         }
     </style>
 </head>
 <body>
 
-    <div class="sticker-layer">
+    <div class="sticker-layer" id="stickerContainer">
         <img src="stickers/ado-s-01.png" class="sticker s1" alt="sticker">
         <img src="stickers/ado-s-02.png" class="sticker s2" alt="sticker">
         <img src="stickers/ado-s-03.png" class="sticker s3" alt="sticker">
@@ -193,13 +180,13 @@
     </div>
 
     <nav>
-        <div class="logo">ADO // <span class="logo-text" style="color:white">WALLPAPERS</span></div>
+        <div class="logo">ADO // <span style="color:white">WALLPAPERS</span></div>
         <div id="clock">00:00:00</div>
     </nav>
 
     <header>
         <h1>Wallpaper Gallery</h1>
-        <p>Resource library for virtual environments</p>
+        <p>Double tap anywhere to drop a sticker</p>
         <div class="search-container">
             <input type="text" id="wallpaperSearch" placeholder="Search filenames..." onkeyup="filterWallpapers()">
         </div>
@@ -210,22 +197,11 @@
             <div class="card" data-name="ado01.png"><img src="wallpapers/ado01.png"><div class="card-info"><span class="file-name">ado01</span><span class="file-ext">png</span></div></div>
             <div class="card" data-name="ado02.webp"><img src="wallpapers/ado02.webp"><div class="card-info"><span class="file-name">ado02</span><span class="file-ext">webp</span></div></div>
             <div class="card" data-name="ado03.webp"><img src="wallpapers/ado03.webp"><div class="card-info"><span class="file-name">ado03</span><span class="file-ext">webp</span></div></div>
-            <div class="card" data-name="ado04.png"><img src="wallpapers/ado04.png"><div class="card-info"><span class="file-name">ado04</span><span class="file-ext">png</span></div></div>
-            <div class="card" data-name="ado05.webp"><img src="wallpapers/ado05.webp"><div class="card-info"><span class="file-name">ado05</span><span class="file-ext">webp</span></div></div>
-            <div class="card" data-name="ado06.png"><img src="wallpapers/ado06.png"><div class="card-info"><span class="file-name">ado06</span><span class="file-ext">png</span></div></div>
-            <div class="card" data-name="ado07.webp"><img src="wallpapers/ado07.webp"><div class="card-info"><span class="file-name">ado07</span><span class="file-ext">webp</span></div></div>
-            <div class="card" data-name="ado08.png"><img src="wallpapers/ado08.png"><div class="card-info"><span class="file-name">ado08</span><span class="file-ext">png</span></div></div>
-            <div class="card" data-name="ado09.jpg"><img src="wallpapers/ado09.jpg"><div class="card-info"><span class="file-name">ado09</span><span class="file-ext">jpg</span></div></div>
-            <div class="card" data-name="ado10.jpg"><img src="wallpapers/ado10.jpg"><div class="card-info"><span class="file-name">ado10</span><span class="file-ext">jpg</span></div></div>
-            <div class="card" data-name="ado11.jpg"><img src="wallpapers/ado11.jpg"><div class="card-info"><span class="file-name">ado11</span><span class="file-ext">jpg</span></div></div>
-            <div class="card" data-name="ado12.jpg"><img src="wallpapers/ado12.jpg"><div class="card-info"><span class="file-name">ado12</span><span class="file-ext">jpg</span></div></div>
-            <div class="card" data-name="ado13.jpg"><img src="wallpapers/ado13.jpg"><div class="card-info"><span class="file-name">ado13</span><span class="file-ext">jpg</span></div></div>
-            <div class="card" data-name="cards.jpg"><img src="wallpapers/cards.jpg"><div class="card-info"><span class="file-name">cards</span><span class="file-ext">jpg</span></div></div>
-            <div class="card" data-name="purple.jpg"><img src="wallpapers/purple.jpg"><div class="card-info"><span class="file-name">purple</span><span class="file-ext">jpg</span></div></div>
-        </div>
+            </div>
     </div>
 
     <script>
+        // --- Clock Logic ---
         function updateClock() {
             const now = new Date();
             document.getElementById('clock').innerText = now.toLocaleTimeString();
@@ -233,6 +209,7 @@
         setInterval(updateClock, 1000);
         updateClock();
 
+        // --- Search Logic ---
         function filterWallpapers() {
             const input = document.getElementById('wallpaperSearch').value.toLowerCase();
             const cards = document.querySelectorAll('.card');
@@ -242,77 +219,63 @@
             });
         }
 
+        // --- Card Click Logic ---
         document.querySelectorAll('.card').forEach(card => {
-            card.onclick = () => {
+            card.addEventListener('click', (e) => {
+                // We stop propagation so clicking a card doesn't spawn a sticker immediately
                 const img = card.querySelector('img').src;
                 window.open(img, '_blank');
-            };
+            });
         });
 
-        // Sticker spawning functionality
-        const stickerUrls = [
-            "stickers/ado-s-01.png",
-            "stickers/ado-s-02.png", 
-            "stickers/ado-s-03.png",
-            "stickers/ado-s-04.png",
-            "stickers/ado-s-05.png"
+        // --- STICKER SPAWNER LOGIC ---
+        const stickerFiles = [
+            'stickers/ado-s-01.png',
+            'stickers/ado-s-02.png',
+            'stickers/ado-s-03.png',
+            'stickers/ado-s-04.png',
+            'stickers/ado-s-05.png'
         ];
 
-        let lastTapTime = 0;
-        let tapCount = 0;
-        let tapTimer = null;
+        function spawnSticker(x, y) {
+            const container = document.getElementById('stickerContainer');
+            const newSticker = document.createElement('img');
+            
+            // Pick a random sticker
+            const randomSrc = stickerFiles[Math.floor(Math.random() * stickerFiles.length)];
+            const randomRotation = Math.floor(Math.random() * 60) - 30; // -30 to +30 deg
+            
+            newSticker.src = randomSrc;
+            newSticker.className = 'sticker';
+            newSticker.style.left = x + 'px';
+            newSticker.style.top = y + 'px';
+            newSticker.style.setProperty('--r', randomRotation + 'deg');
+            
+            container.appendChild(newSticker);
 
-        document.body.addEventListener('touchstart', handleDoubleTap);
-        document.body.addEventListener('click', handleDoubleTap);
-
-        function handleDoubleTap(e) {
-            const currentTime = new Date().getTime();
-            const tapLength = currentTime - lastTapTime;
-
-            if (tapLength < 300) {
-                tapCount++;
-                if (tapCount === 2) {
-                    // Double tap detected
-                    const rect = document.body.getBoundingClientRect();
-                    const x = e.clientX || e.touches[0].clientX;
-                    const y = e.clientY || e.touches[0].clientY;
-                    
-                    spawnRandomSticker(x, y);
-                    
-                    tapCount = 0; // Reset after double tap
-                }
-            } else {
-                tapCount = 1;
+            // Optional: Limit total stickers to keep performance high
+            if(container.children.length > 30) {
+                container.removeChild(container.children[5]); // Remove oldest (after the 5 initials)
             }
-            
-            lastTapTime = currentTime;
-            
-            // Clear timer after 300ms if single tap
-            if (tapTimer) clearTimeout(tapTimer);
-            tapTimer = setTimeout(() => { tapCount = 0; }, 300);
         }
 
-        function spawnRandomSticker(x, y) {
-            const sticker = document.createElement('img');
-            const randomIndex = Math.floor(Math.random() * stickerUrls.length);
-            sticker.src = stickerUrls[randomIndex];
-            sticker.classList.add('dynamic-sticker');
-            
-            // Position at tap coordinates
-            sticker.style.left = `${x}px`;
-            sticker.style.top = `${y}px`;
-            
-            // Random rotation for variety
-            const rotation = Math.random() * 30 - 15; // -15 to 15 degrees
-            sticker.style.transform += ` rotate(${rotation}deg)`;
-            
-            document.body.appendChild(sticker);
+        // Handle Mouse Double Click
+        document.body.addEventListener('dblclick', (e) => {
+            spawnSticker(e.clientX, e.clientY);
+        });
 
-            // Remove sticker after animation completes (0.6s) + delay
-            setTimeout(() => {
-                sticker.remove();
-            }, 600);
-        }
+        // Handle Mobile Double Tap
+        let lastTap = 0;
+        document.body.addEventListener('touchend', (e) => {
+            const currentTime = new Date().getTime();
+            const tapLength = currentTime - lastTap;
+            if (tapLength < 300 && tapLength > 0) {
+                const touch = e.changedTouches[0];
+                spawnSticker(touch.clientX, touch.clientY);
+                e.preventDefault(); // Prevents zooming
+            }
+            lastTap = currentTime;
+        });
     </script>
 </body>
 </html>
