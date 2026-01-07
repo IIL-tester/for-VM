@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
+    <link rel="icon" type="image/x-icon" href="ado-icon.ico">
+    
     <style>
         :root {
             --bg-color: #0f172a;
@@ -24,7 +26,7 @@
             margin: 0;
             padding: 0;
             min-height: 100vh;
-            overflow-x: hidden; /* Prevents stickers from causing horizontal scroll */
+            overflow-x: hidden; 
         }
 
         /* --- Sticker Background Layer --- */
@@ -34,20 +36,19 @@
             left: 0;
             width: 100%;
             height: 100%;
-            pointer-events: none; /* Allows you to click through them to the gallery */
-            z-index: 0; /* Keeps them behind the navigation and cards */
+            pointer-events: none; 
+            z-index: 0; 
         }
 
         .sticker {
             position: absolute;
-            width: 120px; /* Adjust size as needed */
+            width: 120px; 
             height: auto;
             opacity: 0.8;
             filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
             transition: transform 0.3s ease;
         }
 
-        /* Specific positions for each sticker */
         .s1 { top: 15%; left: 5%; transform: rotate(-15deg); }
         .s2 { top: 60%; left: 3%; transform: rotate(10deg); }
         .s3 { top: 20%; right: 5%; transform: rotate(12deg); }
@@ -106,7 +107,7 @@
             margin: 0 auto;
             padding: 0 1.5rem 4rem;
             position: relative;
-            z-index: 1; /* Places gallery above the fixed stickers */
+            z-index: 1; 
         }
 
         .gallery {
@@ -156,7 +157,7 @@
         }
 
         @media (max-width: 1000px) {
-            .sticker { width: 80px; opacity: 0.5; } /* Make them smaller/fainter on smaller screens */
+            .sticker { width: 80px; opacity: 0.5; } 
         }
     </style>
 </head>
