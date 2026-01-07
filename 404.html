@@ -28,7 +28,7 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            overflow: hidden;
+            overflow-x: hidden; /* Prevent horizontal scroll on mobile */
         }
 
         /* --- Sticker Background Layer --- */
@@ -46,21 +46,20 @@
             position: absolute;
             width: 120px; 
             height: auto;
-            opacity: 0.4; /* Slightly dimmer for the error page */
+            opacity: 0.3; /* Lower opacity for better readability on small screens */
             filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
         }
 
-        .s1 { top: 15%; left: 5%; transform: rotate(-15deg); }
-        .s2 { top: 60%; left: 3%; transform: rotate(10deg); }
-        .s3 { top: 20%; right: 5%; transform: rotate(12deg); }
-        .s4 { top: 75%; right: 4%; transform: rotate(-8deg); }
-        .s5 { bottom: 10%; left: 45%; transform: rotate(5deg); }
+        .s1 { top: 10%; left: -20px; transform: rotate(-15deg); }
+        .s2 { top: 70%; left: 5%; transform: rotate(10deg); }
+        .s3 { top: 15%; right: -20px; transform: rotate(12deg); }
+        .s4 { top: 80%; right: 5%; transform: rotate(-8deg); }
 
         /* --- Navigation --- */
         nav {
             background: var(--glass);
             backdrop-filter: blur(10px);
-            padding: 1rem 2rem;
+            padding: 1rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -68,8 +67,19 @@
             border-bottom: 1px solid rgba(255,255,255,0.1);
         }
 
-        .logo { font-weight: 800; font-size: 1.2rem; color: var(--accent); letter-spacing: 1px; text-decoration: none; }
-        #clock { font-family: monospace; font-size: 1.1rem; color: var(--text-dim); }
+        .logo { 
+            font-weight: 800; 
+            font-size: 1rem; 
+            color: var(--accent); 
+            letter-spacing: 1px; 
+            text-decoration: none; 
+        }
+        
+        #clock { 
+            font-family: monospace; 
+            font-size: 0.9rem; 
+            color: var(--text-dim); 
+        }
 
         /* --- Error Content --- */
         .error-container {
@@ -85,40 +95,62 @@
         }
 
         .error-code {
-            font-size: clamp(8rem, 20vw, 12rem);
+            /* Responsive font size: stays between 6rem and 12rem */
+            font-size: clamp(6rem, 25vw, 12rem);
             font-weight: 900;
             margin: 0;
-            line-height: 1;
+            line-height: 0.8;
             background: linear-gradient(to bottom, var(--accent), #1e293b);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 0 30px rgba(56, 189, 248, 0.3));
+            filter: drop-shadow(0 0 20px rgba(56, 189, 248, 0.2));
         }
 
-        h1 { font-size: 2rem; margin: 1rem 0 0.5rem; }
-        p { color: var(--text-dim); font-size: 1.1rem; max-width: 500px; margin-bottom: 2rem; }
+        h1 { 
+            font-size: clamp(1.5rem, 5vw, 2.2rem); 
+            margin: 1.5rem 0 0.5rem; 
+        }
+
+        p { 
+            color: var(--text-dim); 
+            font-size: 1rem; 
+            max-width: 320px; 
+            margin: 0 auto 2.5rem;
+            line-height: 1.5;
+        }
 
         .btn-home {
             display: inline-block;
-            padding: 15px 40px;
+            padding: 16px 32px;
             background: var(--card-bg);
             color: var(--text-main);
             text-decoration: none;
             border-radius: 50px;
             border: 1px solid rgba(255,255,255,0.1);
             font-weight: 600;
-            transition: 0.3s;
+            transition: all 0.3s ease;
+            width: 100%;
+            max-width: 240px;
         }
 
-        .btn-home:hover {
-            transform: translateY(-3px);
-            border-color: var(--accent);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-            background: #2d3a4f;
+        .btn-home:active {
+            transform: scale(0.95);
         }
 
-        @media (max-width: 1000px) {
-            .sticker { width: 80px; opacity: 0.2; } 
+        /* --- Mobile Adjustments --- */
+        @media (max-width: 600px) {
+            .sticker { width: 70px; }
+            .s1 { left: -30px; }
+            .s3 { right: -30px; }
+            nav { padding: 0.8rem 1.2rem; }
+        }
+
+        @media (min-width: 768px) {
+            .btn-home:hover {
+                transform: translateY(-3px);
+                border-color: var(--accent);
+                box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            }
         }
     </style>
 </head>
@@ -129,7 +161,6 @@
         <img src="stickers/ado-s-02.png" class="sticker s2" alt="">
         <img src="stickers/ado-s-03.png" class="sticker s3" alt="">
         <img src="stickers/ado-s-04.png" class="sticker s4" alt="">
-        <img src="stickers/ado-s-05.png" class="sticker s5" alt="">
     </div>
 
     <nav>
@@ -140,14 +171,14 @@
     <div class="error-container">
         <div class="error-code">404</div>
         <h1>Environment Lost</h1>
-        <p>The resource you are looking for has been moved or deleted from the virtual library.</p>
+        <p>The resource you are looking for does not exist in this sector.</p>
         <a href="index.html" class="btn-home">Back to Gallery</a>
     </div>
 
     <script>
         function updateClock() {
             const now = new Date();
-            document.getElementById('clock').innerText = now.toLocaleTimeString();
+            document.getElementById('clock').innerText = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', second:'2-digit'});
         }
         setInterval(updateClock, 1000);
         updateClock();
