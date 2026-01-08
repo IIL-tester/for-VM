@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VM Home Console</title>
+    <title>Home</title>
     <style>
         :root {
             --bg-color: #0f172a;
@@ -24,7 +24,35 @@
             margin: 0;
             padding: 0;
             min-height: 100vh;
+            overflow-x: hidden; /* Prevents stickers from causing horizontal scroll */
         }
+
+        /* --- Sticker Background Layer --- */
+        .sticker-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none; /* Allows you to click through them to the gallery */
+            z-index: 0; /* Keeps them behind the navigation and cards */
+        }
+
+        .sticker {
+            position: absolute;
+            width: 120px; /* Adjust size as needed */
+            height: auto;
+            opacity: 0.8;
+            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
+            transition: transform 0.3s ease;
+        }
+
+        /* Specific positions for each sticker */
+        .s1 { top: 15%; left: 5%; transform: rotate(-15deg); }
+        .s2 { top: 60%; left: 3%; transform: rotate(10deg); }
+        .s3 { top: 20%; right: 5%; transform: rotate(12deg); }
+        .s4 { top: 75%; right: 4%; transform: rotate(-8deg); }
+        .s5 { bottom: 10%; left: 45%; transform: rotate(5deg); }
 
         /* --- Top Navigation --- */
         nav {
@@ -41,13 +69,14 @@
         }
 
         .logo { font-weight: 800; font-size: 1.2rem; color: var(--accent); letter-spacing: 1px; }
-        
         #clock { font-family: monospace; font-size: 1.1rem; color: var(--text-dim); }
 
         /* --- Hero Section --- */
         header {
             text-align: center;
             padding: 4rem 1rem 2rem;
+            position: relative;
+            z-index: 1;
         }
 
         h1 { font-size: 2.5rem; margin: 0; font-weight: 800; }
@@ -71,16 +100,13 @@
             transition: 0.3s;
         }
 
-        #wallpaperSearch:focus {
-            border-color: var(--accent);
-            box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
-        }
-
         /* --- Gallery Grid --- */
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 1.5rem 4rem;
+            position: relative;
+            z-index: 1; /* Places gallery above the fixed stickers */
         }
 
         .gallery {
@@ -96,7 +122,6 @@
             transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             border: 1px solid rgba(255,255,255,0.05);
             cursor: pointer;
-            position: relative;
         }
 
         .card:hover {
@@ -110,10 +135,7 @@
             height: 180px;
             object-fit: cover;
             display: block;
-            transition: 0.3s;
         }
-
-        .card:hover img { filter: brightness(1.1); }
 
         .card-info {
             padding: 15px;
@@ -133,15 +155,20 @@
             text-transform: uppercase;
         }
 
-        /* --- Mobile Tweaks --- */
-        @media (max-width: 600px) {
-            h1 { font-size: 1.8rem; }
-            nav { padding: 1rem; }
-            .logo-text { display: none; }
+        @media (max-width: 1000px) {
+            .sticker { width: 80px; opacity: 0.5; } /* Make them smaller/fainter on smaller screens */
         }
     </style>
 </head>
 <body>
+
+    <div class="sticker-layer">
+        <img src="stickers/ado-s-01.png" class="sticker s1" alt="sticker">
+        <img src="stickers/ado-s-02.png" class="sticker s2" alt="sticker">
+        <img src="stickers/ado-s-03.png" class="sticker s3" alt="sticker">
+        <img src="stickers/ado-s-04.png" class="sticker s4" alt="sticker">
+        <img src="stickers/ado-s-05.png" class="sticker s5" alt="sticker">
+    </div>
 
     <nav>
         <div class="logo">VM_OS // <span class="logo-text" style="color:white">WALLPAPERS</span></div>
@@ -151,34 +178,32 @@
     <header>
         <h1>Wallpaper Gallery</h1>
         <p>Resource library for virtual environments</p>
-        
         <div class="search-container">
-            <input type="text" id="wallpaperSearch" placeholder="Search filenames (e.g. 'ado', 'purple')..." onkeyup="filterWallpapers()">
+            <input type="text" id="wallpaperSearch" placeholder="Search filenames..." onkeyup="filterWallpapers()">
         </div>
     </header>
 
     <div class="container">
         <div class="gallery" id="wallpaperGrid">
-            <div class="card" data-name="ado01.png"><img src="ado01.png"><div class="card-info"><span class="file-name">ado01</span><span class="file-ext">png</span></div></div>
-            <div class="card" data-name="ado02.webp"><img src="ado02.webp"><div class="card-info"><span class="file-name">ado02</span><span class="file-ext">webp</span></div></div>
-            <div class="card" data-name="ado03.webp"><img src="ado03.webp"><div class="card-info"><span class="file-name">ado03</span><span class="file-ext">webp</span></div></div>
-            <div class="card" data-name="ado04.png"><img src="ado04.png"><div class="card-info"><span class="file-name">ado04</span><span class="file-ext">png</span></div></div>
-            <div class="card" data-name="ado05.webp"><img src="ado05.webp"><div class="card-info"><span class="file-name">ado05</span><span class="file-ext">webp</span></div></div>
-            <div class="card" data-name="ado06.png"><img src="ado06.png"><div class="card-info"><span class="file-name">ado06</span><span class="file-ext">png</span></div></div>
-            <div class="card" data-name="ado07.webp"><img src="ado07.webp"><div class="card-info"><span class="file-name">ado07</span><span class="file-ext">webp</span></div></div>
-            <div class="card" data-name="ado08.png"><img src="ado08.png"><div class="card-info"><span class="file-name">ado08</span><span class="file-ext">png</span></div></div>
-            <div class="card" data-name="ado09.jpg"><img src="ado09.jpg"><div class="card-info"><span class="file-name">ado09</span><span class="file-ext">jpg</span></div></div>
-            <div class="card" data-name="ado10.jpg"><img src="ado10.jpg"><div class="card-info"><span class="file-name">ado10</span><span class="file-ext">jpg</span></div></div>
-            <div class="card" data-name="ado11.jpg"><img src="ado11.jpg"><div class="card-info"><span class="file-name">ado11</span><span class="file-ext">jpg</span></div></div>
-            <div class="card" data-name="ado12.jpg"><img src="ado12.jpg"><div class="card-info"><span class="file-name">ado12</span><span class="file-ext">jpg</span></div></div>
-            <div class="card" data-name="ado13.jpg"><img src="ado13.jpg"><div class="card-info"><span class="file-name">ado13</span><span class="file-ext">jpg</span></div></div>
-            <div class="card" data-name="cards.jpg"><img src="cards.jpg"><div class="card-info"><span class="file-name">cards</span><span class="file-ext">jpg</span></div></div>
-            <div class="card" data-name="purple.jpg"><img src="purple.jpg"><div class="card-info"><span class="file-name">purple</span><span class="file-ext">jpg</span></div></div>
+            <div class="card" data-name="ado01.png"><img src="wallpapers/ado01.png"><div class="card-info"><span class="file-name">ado01</span><span class="file-ext">png</span></div></div>
+            <div class="card" data-name="ado02.webp"><img src="wallpapers/ado02.webp"><div class="card-info"><span class="file-name">ado02</span><span class="file-ext">webp</span></div></div>
+            <div class="card" data-name="ado03.webp"><img src="wallpapers/ado03.webp"><div class="card-info"><span class="file-name">ado03</span><span class="file-ext">webp</span></div></div>
+            <div class="card" data-name="ado04.png"><img src="wallpapers/ado04.png"><div class="card-info"><span class="file-name">ado04</span><span class="file-ext">png</span></div></div>
+            <div class="card" data-name="ado05.webp"><img src="wallpapers/ado05.webp"><div class="card-info"><span class="file-name">ado05</span><span class="file-ext">webp</span></div></div>
+            <div class="card" data-name="ado06.png"><img src="wallpapers/ado06.png"><div class="card-info"><span class="file-name">ado06</span><span class="file-ext">png</span></div></div>
+            <div class="card" data-name="ado07.webp"><img src="wallpapers/ado07.webp"><div class="card-info"><span class="file-name">ado07</span><span class="file-ext">webp</span></div></div>
+            <div class="card" data-name="ado08.png"><img src="wallpapers/ado08.png"><div class="card-info"><span class="file-name">ado08</span><span class="file-ext">png</span></div></div>
+            <div class="card" data-name="ado09.jpg"><img src="wallpapers/ado09.jpg"><div class="card-info"><span class="file-name">ado09</span><span class="file-ext">jpg</span></div></div>
+            <div class="card" data-name="ado10.jpg"><img src="wallpapers/ado10.jpg"><div class="card-info"><span class="file-name">ado10</span><span class="file-ext">jpg</span></div></div>
+            <div class="card" data-name="ado11.jpg"><img src="wallpapers/ado11.jpg"><div class="card-info"><span class="file-name">ado11</span><span class="file-ext">jpg</span></div></div>
+            <div class="card" data-name="ado12.jpg"><img src="wallpapers/ado12.jpg"><div class="card-info"><span class="file-name">ado12</span><span class="file-ext">jpg</span></div></div>
+            <div class="card" data-name="ado13.jpg"><img src="wallpapers/ado13.jpg"><div class="card-info"><span class="file-name">ado13</span><span class="file-ext">jpg</span></div></div>
+            <div class="card" data-name="cards.jpg"><img src="wallpapers/cards.jpg"><div class="card-info"><span class="file-name">cards</span><span class="file-ext">jpg</span></div></div>
+            <div class="card" data-name="purple.jpg"><img src="wallpapers/purple.jpg"><div class="card-info"><span class="file-name">purple</span><span class="file-ext">jpg</span></div></div>
         </div>
     </div>
 
     <script>
-        // 1. Live Clock Function
         function updateClock() {
             const now = new Date();
             document.getElementById('clock').innerText = now.toLocaleTimeString();
@@ -186,18 +211,15 @@
         setInterval(updateClock, 1000);
         updateClock();
 
-        // 2. Search Filter Function
         function filterWallpapers() {
             const input = document.getElementById('wallpaperSearch').value.toLowerCase();
             const cards = document.querySelectorAll('.card');
-            
             cards.forEach(card => {
                 const name = card.getAttribute('data-name').toLowerCase();
                 card.style.display = name.includes(input) ? "block" : "none";
             });
         }
 
-        // 3. Open full image in new tab
         document.querySelectorAll('.card').forEach(card => {
             card.onclick = () => {
                 const img = card.querySelector('img').src;
